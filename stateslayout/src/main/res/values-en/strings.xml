@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_state_tip_loading">Loading</string>
+    <string name="default_state_tip_empty">No data</string>
+    <string name="default_state_tip_error">Error..</string>
+</resources>

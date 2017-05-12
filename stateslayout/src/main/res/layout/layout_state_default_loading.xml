@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                               xmlns:app="http://schemas.android.com/apk/res-auto"
+                                               android:id="@+id/layout_common_state_loading"
+                                               android:layout_width="match_parent"
+                                               android:layout_height="match_parent"
+                                               android:orientation="vertical">
+
+    <com.scottsu.stateslayout.ProgressWheel
+        android:id="@+id/progress_wheel_layout_state_default_loading"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_above="@+id/tv_tip_layout_state_default_loading"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        app:layout_aspectRatio="100%"
+        app:layout_widthPercent="20%"
+        app:matProg_barColor="#3949AB"
+        app:matProg_barWidth="5dp"
+        app:matProg_circleRadius="36dp"
+        app:matProg_progressIndeterminate="true"/>
+
+    <TextView
+        android:id="@+id/tv_tip_layout_state_default_loading"
+        android:text="@string/default_state_tip_loading"
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/text_size_caption"
+        android:textColor="@color/textColorTertiary"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
+
+</android.support.percent.PercentRelativeLayout>

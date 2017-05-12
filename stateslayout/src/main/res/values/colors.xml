@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="textColorTertiary">#8a000000</color>
+    <color name="textColorSecondary">#8a000000</color>
+    <color name="textColorPrimary">#de000000</color>
+
+    <color name="default_state_background">#aaaaaa</color>
+    <color name="default_tip_text">@color/textColorTertiary</color>
+    <color name="default_loading_wheel_color">@color/textColorTertiary</color>
+
+
+</resources>

@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">library</string>
+    <string name="default_state_tip_loading">加载中</string>
+    <string name="default_state_tip_empty">没有任何数据</string>
+    <string name="default_state_tip_error">出错了..</string>
+</resources>
