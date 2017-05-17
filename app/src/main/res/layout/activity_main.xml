@@ -27,7 +27,7 @@
         app:sl_loading_wheel_color="@color/colorPrimaryDark"
         app:sl_state_background_color="#ffffff"
         app:sl_tip_text_color="@color/textColorTertiary"
-        app:sl_tip_text_size="16sp">
+        app:sl_tip_text_size="12sp">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
