@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                            xmlns:app="http://schemas.android.com/apk/res-auto"
-                                           android:paddingLeft="10dp"
-                                           android:paddingRight="10dp"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent">
+                                               xmlns:app="http://schemas.android.com/apk/res-auto"
+                                               android:layout_width="match_parent"
+                                               android:layout_height="match_parent"
+                                               android:paddingLeft="10dp"
+                                               android:paddingRight="10dp">
 
 
     <android.support.percent.PercentFrameLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_placeholder_state_error"
         android:layout_above="@+id/tv_tip_layout_state_view"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:src="@drawable/ic_placeholder_state_error"
         app:layout_widthPercent="25%">
 
         <ImageView
@@ -24,14 +24,15 @@
             app:layout_aspectRatio="100%"
             app:layout_widthPercent="100%"/>
     </android.support.percent.PercentFrameLayout>
+
     <TextView
         android:id="@+id/tv_tip_layout_state_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:gravity="center"
         android:maxLines="1"
         android:paddingTop="12dp"
         android:textColor="@color/textColorTertiary"
-        android:layout_centerInParent="true"
         android:textSize="@dimen/text_size_body"/>
 </android.support.percent.PercentRelativeLayout>
