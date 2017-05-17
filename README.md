@@ -1,7 +1,6 @@
 # StatesLayout
 
-Usage:
-
+Usage:  
       <com.scottsu.stateslayout.StatesLayout
         android:id="@+id/state_layout"
         android:layout_width="match_parent"
@@ -20,3 +19,27 @@ Usage:
             android:layout_height="250dp"/>
 
       </com.scottsu.stateslayout.StatesLayout>
+      
+      ...
+       mStatesLayout = (StatesLayout) findViewById(R.id.state_layout);
+       
+       mStatesLayout.setCallback(new StatesLayout.StatesLayoutCallback()
+            {
+                @Override
+                public void onEmptyClick(View view)
+                {
+                    Toast.makeText(MainActivity.this, "onEmptyClick", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onErrorClick(View view)
+                {
+                    Toast.makeText(MainActivity.this, "onErrorClick", Toast.LENGTH_SHORT).show();
+                }
+            });
+            
+         mStatesLayout.showLoading();    
+         mStatesLayout.showEmpty();    
+         mStatesLayout.showError();
+      
+      
