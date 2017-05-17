@@ -21,7 +21,9 @@ Usage:
             android:layout_height="250dp"/>
 
     </com.scottsu.stateslayout.StatesLayout>
+    
       ...
+      
        mStatesLayout = (StatesLayout) findViewById(R.id.state_layout);
        
        mStatesLayout.setCallback(new StatesLayout.StatesLayoutCallback()
