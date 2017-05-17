@@ -1,10 +1,12 @@
 # StatesLayout
 
 Usage:  
-      <com.scottsu.stateslayout.StatesLayout
+
+     <com.scottsu.stateslayout.StatesLayout
         android:id="@+id/state_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:sl_loading_wheel_color="@color/colorPrimaryDark"
         app:sl_state_background_color="#ffffff"
         app:sl_tip_text_color="@color/textColorTertiary"
@@ -18,8 +20,7 @@ Usage:
             android:layout_width="match_parent"
             android:layout_height="250dp"/>
 
-      </com.scottsu.stateslayout.StatesLayout>
-      
+    </com.scottsu.stateslayout.StatesLayout>
       ...
        mStatesLayout = (StatesLayout) findViewById(R.id.state_layout);
        
