@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity
         menu.add(0, 1, 1, "Empty");
         menu.add(0, 2, 2, "Error");
         menu.add(0, 3, 3, "Content");
+        menu.add(0, 4, 4, "Change");
 
         return true;
     }
@@ -68,6 +69,14 @@ public class MainActivity extends AppCompatActivity
                 break;
             case 3:
                 getStateView().showContent();
+                break;
+            case 4:
+                getStateView().setEmptyTip("new Empty tip");
+                getStateView().setErrorTip("new Error tip");
+                getStateView().setErrorIconRes(R.mipmap.ic_launcher);
+                getStateView().setEmptyIconRes(R.mipmap.ic_launcher_round);
+                getStateView().setTipTextColor(getResources().getColor(R.color.colorPrimary));
+                getStateView().setTipTextSizeSp(33);
                 break;
         }
 

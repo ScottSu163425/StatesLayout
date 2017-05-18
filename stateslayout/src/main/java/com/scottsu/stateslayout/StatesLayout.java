@@ -36,6 +36,7 @@ public class StatesLayout extends CoordinatorLayout
     private View mLoadingView;
     private StateView mEmptyView, mErrorView;
     private ProgressWheel mDefaultLoadingProgressWheel;
+    private TextView mDefaultLoadingTipTextView;
     private StatesLayoutCallback mCallback;
 
 
@@ -105,6 +106,7 @@ public class StatesLayout extends CoordinatorLayout
         //User default loading view.
         mLoadingView = LayoutInflater.from(context).inflate(R.layout.layout_state_default_loading, this, false);
         mDefaultLoadingProgressWheel = (ProgressWheel) mLoadingView.findViewById(R.id.progress_wheel_layout_state_default_loading);
+        mDefaultLoadingTipTextView= (TextView) mLoadingView.findViewById(R.id.tv_tip_layout_state_default_loading);
         TextView textView = (TextView) mLoadingView.findViewById(R.id.tv_tip_layout_state_default_loading);
         textView.setText(TextUtils.isEmpty(mLoadingTip) ? context.getString(R.string.default_state_tip_loading) : mLoadingTip);
         textView.setTextColor(mTipTextColor);
@@ -175,38 +177,18 @@ public class StatesLayout extends CoordinatorLayout
         hideView(mErrorView);
     }
 
-    public void showEmpty()
-    {
-        showEmpty("");
-    }
-
-    public void showError()
-    {
-        showError("");
-    }
-
-    public void showEmpty(String tip)
+    public void showEmpty( )
     {
         showView(mEmptyView);
         hideView(mLoadingView);
         hideView(mErrorView);
-
-        if (!TextUtils.isEmpty(tip))
-        {
-            mEmptyView.setTip(tip);
-        }
     }
 
-    public void showError(String tip)
+    public void showError( )
     {
         showView(mErrorView);
         hideView(mEmptyView);
         hideView(mLoadingView);
-
-        if (!TextUtils.isEmpty(tip))
-        {
-            mErrorView.setTip(tip);
-        }
     }
 
     public void showContent()
@@ -247,6 +229,52 @@ public class StatesLayout extends CoordinatorLayout
         if (mDefaultLoadingProgressWheel != null)
         {
             mDefaultLoadingProgressWheel.setBarColor(colorInt);
+        }
+    }
+
+    public void setEmptyIconRes(@DrawableRes int emptyIconRes)
+    {
+       mEmptyView.setIcon(emptyIconRes);
+    }
+
+    public void setErrorIconRes(@DrawableRes int errorIconRes)
+    {
+       mErrorView.setIcon(errorIconRes);
+    }
+
+    public void setEmptyTip(String emptyTip)
+    {
+        mEmptyView.setTip(emptyTip);
+    }
+
+    public void setErrorTip(String errorTip)
+    {
+       mErrorView.setTip(errorTip);
+    }
+
+    public void setTipTextSizeSp(float tipTextSizeSp)
+    {
+        mTipTextSizeSp = tipTextSizeSp;
+
+        mEmptyView.setTipSize(tipTextSizeSp);
+        mErrorView.setTipSize(tipTextSizeSp);
+
+        if (mDefaultLoadingTipTextView != null)
+        {
+            mDefaultLoadingTipTextView.setTextSize(tipTextSizeSp);
+        }
+    }
+
+    public void setTipTextColor(@ColorInt int tipTextColor)
+    {
+        mTipTextColor = tipTextColor;
+
+        mEmptyView.setTipSize(tipTextColor);
+        mErrorView.setTipSize(tipTextColor);
+
+        if (mDefaultLoadingTipTextView != null)
+        {
+            mDefaultLoadingTipTextView.setTextSize(tipTextColor);
         }
     }
 
