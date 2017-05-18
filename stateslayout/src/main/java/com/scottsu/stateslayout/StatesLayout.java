@@ -3,6 +3,7 @@ package com.scottsu.stateslayout;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.text.TextUtils;
@@ -34,6 +35,7 @@ public class StatesLayout extends CoordinatorLayout
     private float mTipTextSizeSp = 12;
     private View mLoadingView;
     private StateView mEmptyView, mErrorView;
+    private ProgressWheel mDefaultLoadingProgressWheel;
     private StatesLayoutCallback mCallback;
 
 
@@ -55,6 +57,8 @@ public class StatesLayout extends CoordinatorLayout
         initLoadingView(context);
         initEmptyView(context);
         initErrorView(context);
+
+        setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         bringToTopOfZ(this);
     }
 
@@ -100,13 +104,13 @@ public class StatesLayout extends CoordinatorLayout
     {
         //User default loading view.
         mLoadingView = LayoutInflater.from(context).inflate(R.layout.layout_state_default_loading, this, false);
-        ProgressWheel progressWheel = (ProgressWheel) mLoadingView.findViewById(R.id.progress_wheel_layout_state_default_loading);
+        mDefaultLoadingProgressWheel = (ProgressWheel) mLoadingView.findViewById(R.id.progress_wheel_layout_state_default_loading);
         TextView textView = (TextView) mLoadingView.findViewById(R.id.tv_tip_layout_state_default_loading);
         textView.setText(TextUtils.isEmpty(mLoadingTip) ? context.getString(R.string.default_state_tip_loading) : mLoadingTip);
         textView.setTextColor(mTipTextColor);
         textView.setTextSize(mTipTextSizeSp);
 
-        progressWheel.setBarColor(mLoadingWheelColor);
+        mDefaultLoadingProgressWheel.setBarColor(mLoadingWheelColor);
         mLoadingView.setBackgroundColor(mStateBackgroundColor);
     }
 
@@ -216,7 +220,7 @@ public class StatesLayout extends CoordinatorLayout
     {
         if (view.getParent() == null)
         {
-            addView(view, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
 
         if (view.getVisibility() != VISIBLE)
@@ -235,6 +239,14 @@ public class StatesLayout extends CoordinatorLayout
         if (view.getVisibility() == VISIBLE)
         {
             view.setVisibility(GONE);
+        }
+    }
+
+    public void setLoadingWheelColor(@ColorInt int colorInt)
+    {
+        if (mDefaultLoadingProgressWheel != null)
+        {
+            mDefaultLoadingProgressWheel.setBarColor(colorInt);
         }
     }
 
