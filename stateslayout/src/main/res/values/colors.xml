@@ -4,9 +4,9 @@
     <color name="textColorSecondary">#8a000000</color>
     <color name="textColorPrimary">#de000000</color>
 
-    <color name="default_state_background">#aaaaaa</color>
+    <color name="default_state_background">#ffffff</color>
     <color name="default_tip_text">@color/textColorTertiary</color>
-    <color name="default_loading_wheel_color">@color/textColorTertiary</color>
+    <color name="default_loading_wheel_color">#5C6BC0</color>
 
 
 </resources>

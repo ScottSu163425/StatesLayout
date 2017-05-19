@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.LayoutRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -30,19 +31,39 @@ public class StatesLayout extends CoordinatorLayout
     private static final float RATIO_DEFAULT_LOADING_WHEEL_WITH = 0.18f;
 
     private int mStateBackgroundColor;
+
     private int mTipTextColor;
+
     private int mLoadingWheelColor;
-    private int mEmptyIconRes;
-    private int mErrorIconRes;
-    private int mLoadingLayoutRes;
+
+    private
+    @DrawableRes
+    int mEmptyIconRes;
+
+    private
+    @DrawableRes
+    int mErrorIconRes;
+
+    private
+    @LayoutRes
+    int mLoadingLayoutRes;
+
     private String mLoadingTip;
+
     private String mEmptyTip;
+
     private String mErrorTip;
+
     private float mTipTextSizeSp = 16;
+
     private View mLoadingView;
+
     private StateView mEmptyView, mErrorView;
+
     private ProgressWheel mDefaultLoadingProgressWheel;
+
     private TextView mDefaultLoadingTipTextView;
+
     private StatesLayoutCallback mCallback;
 
 
@@ -75,6 +96,7 @@ public class StatesLayout extends CoordinatorLayout
 
         mStateBackgroundColor = typedArray.getColor(R.styleable.StatesLayout_sl_state_background_color,
                 context.getResources().getColor(R.color.default_state_background));
+
         mTipTextColor = typedArray.getColor(R.styleable.StatesLayout_sl_tip_text_color,
                 context.getResources().getColor(R.color.default_tip_text));
 
@@ -135,7 +157,9 @@ public class StatesLayout extends CoordinatorLayout
     {
         mEmptyView = generateStateView(TextUtils.isEmpty(mEmptyTip) ? context.getString(R.string.default_state_tip_empty) : mEmptyTip,
                 mEmptyIconRes);
+
         mEmptyView.setBackgroundColor(mStateBackgroundColor);
+
         mEmptyView.setOnClickListener(new OnClickListener()
         {
             @Override
@@ -160,7 +184,9 @@ public class StatesLayout extends CoordinatorLayout
     {
         mErrorView = generateStateView(TextUtils.isEmpty(mErrorTip) ? context.getString(R.string.default_state_tip_error) : mErrorTip,
                 mErrorIconRes);
+
         mErrorView.setBackgroundColor(mStateBackgroundColor);
+
         mErrorView.setOnClickListener(new OnClickListener()
         {
             @Override
