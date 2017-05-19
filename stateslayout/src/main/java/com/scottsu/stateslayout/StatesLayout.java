@@ -8,10 +8,13 @@ import android.support.annotation.DrawableRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -23,6 +26,9 @@ import android.widget.TextView;
  **/
 public class StatesLayout extends CoordinatorLayout
 {
+    private static final float RATIO_ICON_WITH = 0.25f;
+    private static final float RATIO_DEFAULT_LOADING_WHEEL_WITH = 0.2f;
+
     private int mStateBackgroundColor;
     private int mTipTextColor;
     private int mLoadingWheelColor;
@@ -106,13 +112,22 @@ public class StatesLayout extends CoordinatorLayout
         //User default loading view.
         mLoadingView = LayoutInflater.from(context).inflate(R.layout.layout_state_default_loading, this, false);
         mDefaultLoadingProgressWheel = (ProgressWheel) mLoadingView.findViewById(R.id.progress_wheel_layout_state_default_loading);
-        mDefaultLoadingTipTextView= (TextView) mLoadingView.findViewById(R.id.tv_tip_layout_state_default_loading);
+        mDefaultLoadingTipTextView = (TextView) mLoadingView.findViewById(R.id.tv_tip_layout_state_default_loading);
         TextView textView = (TextView) mLoadingView.findViewById(R.id.tv_tip_layout_state_default_loading);
         textView.setText(TextUtils.isEmpty(mLoadingTip) ? context.getString(R.string.default_state_tip_loading) : mLoadingTip);
         textView.setTextColor(mTipTextColor);
         textView.setTextSize(mTipTextSizeSp);
 
+        int width = (int) (getScreenWidth() * RATIO_DEFAULT_LOADING_WHEEL_WITH);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mDefaultLoadingProgressWheel.getLayoutParams();
+        params.width = width;
+        params.height = width;
+
+        mDefaultLoadingProgressWheel.setLayoutParams(params);
         mDefaultLoadingProgressWheel.setBarColor(mLoadingWheelColor);
+        mDefaultLoadingProgressWheel.setCircleRadius(width);
+        mDefaultLoadingProgressWheel.setBarWidth(width / 11);
+
         mLoadingView.setBackgroundColor(mStateBackgroundColor);
     }
 
@@ -130,6 +145,14 @@ public class StatesLayout extends CoordinatorLayout
             }
         });
 
+        int width = (int) (getScreenWidth() * RATIO_ICON_WITH);
+
+        ImageView icon = mEmptyView.getIconImageView();
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) icon.getLayoutParams();
+        params.width = width;
+        params.height = width;
+        icon.setLayoutParams(params);
+
         bringToTopOfZ(mEmptyView);
     }
 
@@ -146,6 +169,14 @@ public class StatesLayout extends CoordinatorLayout
                 getCallback().onErrorClick(v);
             }
         });
+
+        int width = (int) (getScreenWidth() * RATIO_ICON_WITH);
+
+        ImageView icon = mErrorView.getIconImageView();
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) icon.getLayoutParams();
+        params.width = width;
+        params.height = width;
+        icon.setLayoutParams(params);
 
         bringToTopOfZ(mErrorView);
     }
@@ -177,14 +208,14 @@ public class StatesLayout extends CoordinatorLayout
         hideView(mErrorView);
     }
 
-    public void showEmpty( )
+    public void showEmpty()
     {
         showView(mEmptyView);
         hideView(mLoadingView);
         hideView(mErrorView);
     }
 
-    public void showError( )
+    public void showError()
     {
         showView(mErrorView);
         hideView(mEmptyView);
@@ -234,12 +265,12 @@ public class StatesLayout extends CoordinatorLayout
 
     public void setEmptyIconRes(@DrawableRes int emptyIconRes)
     {
-       mEmptyView.setIcon(emptyIconRes);
+        mEmptyView.setIcon(emptyIconRes);
     }
 
     public void setErrorIconRes(@DrawableRes int errorIconRes)
     {
-       mErrorView.setIcon(errorIconRes);
+        mErrorView.setIcon(errorIconRes);
     }
 
     public void setEmptyTip(String emptyTip)
@@ -249,7 +280,7 @@ public class StatesLayout extends CoordinatorLayout
 
     public void setErrorTip(String errorTip)
     {
-       mErrorView.setTip(errorTip);
+        mErrorView.setTip(errorTip);
     }
 
     public void setTipTextSizeSp(float tipTextSizeSp)
@@ -276,6 +307,22 @@ public class StatesLayout extends CoordinatorLayout
         {
             mDefaultLoadingTipTextView.setTextSize(tipTextColor);
         }
+    }
+
+    private int getScreenWidth()
+    {
+        WindowManager wm = (WindowManager) this.getContext().getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        return outMetrics.widthPixels;
+    }
+
+    private int getScreenHeight()
+    {
+        WindowManager wm = (WindowManager) this.getContext().getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        return outMetrics.heightPixels;
     }
 
     public void setCallback(StatesLayoutCallback mCallback)

@@ -72,5 +72,8 @@ public class StateView extends FrameLayout
         mIconImageView.setImageDrawable(drawable);
     }
 
-
+    public ImageView getIconImageView()
+    {
+        return mIconImageView;
+    }
 }
