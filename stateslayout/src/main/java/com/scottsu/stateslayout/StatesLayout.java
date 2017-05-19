@@ -27,7 +27,7 @@ import android.widget.TextView;
 public class StatesLayout extends CoordinatorLayout
 {
     private static final float RATIO_ICON_WITH = 0.25f;
-    private static final float RATIO_DEFAULT_LOADING_WHEEL_WITH = 0.2f;
+    private static final float RATIO_DEFAULT_LOADING_WHEEL_WITH = 0.18f;
 
     private int mStateBackgroundColor;
     private int mTipTextColor;
@@ -38,7 +38,7 @@ public class StatesLayout extends CoordinatorLayout
     private String mLoadingTip;
     private String mEmptyTip;
     private String mErrorTip;
-    private float mTipTextSizeSp = 12;
+    private float mTipTextSizeSp = 16;
     private View mLoadingView;
     private StateView mEmptyView, mErrorView;
     private ProgressWheel mDefaultLoadingProgressWheel;
