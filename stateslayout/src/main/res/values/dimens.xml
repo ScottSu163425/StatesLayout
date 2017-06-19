@@ -15,5 +15,6 @@
     <dimen name="text_size_display_4">112sp</dimen>
 
 
+    <dimen name="padding_icon_tip">8dp</dimen>
 
 </resources>

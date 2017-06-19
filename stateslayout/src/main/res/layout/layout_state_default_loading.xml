@@ -4,28 +4,35 @@
                                                android:id="@+id/layout_common_state_loading"
                                                android:layout_width="match_parent"
                                                android:layout_height="match_parent"
+                                                 xmlns:tools="http://schemas.android.com/tools"
                                                android:orientation="vertical">
 
-    <com.scottsu.stateslayout.ProgressWheel
-        android:id="@+id/progress_wheel_layout_state_default_loading"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_above="@+id/tv_tip_layout_state_default_loading"
-        android:layout_centerHorizontal="true"
-        app:matProg_barColor="#3949AB"
-        app:matProg_barWidth="6dp"
-        app:matProg_circleRadius="72dp"
-        app:matProg_progressIndeterminate="true"/>
-
-    <TextView
-        android:id="@+id/tv_tip_layout_state_default_loading"
-        android:text="@string/default_state_tip_loading"
-        android:layout_width="wrap_content"
-        android:textSize="@dimen/text_size_caption"
-        android:textColor="@color/textColorTertiary"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="4dp"
-        android:layout_centerInParent="true"/>
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true">
+
+        <com.scottsu.stateslayout.ProgressWheel
+            android:id="@+id/progress_wheel_layout_state_default_loading"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            app:matProg_barWidth="6dp"
+            app:matProg_circleRadius="72dp"
+            app:matProg_progressIndeterminate="true"/>
+
+        <TextView
+            android:id="@+id/tv_tip_layout_state_default_loading"
+            tools:text="@string/default_state_tip_loading"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_size_caption"
+            android:textColor="@color/textColorTertiary"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:paddingTop="@dimen/padding_icon_tip"/>
+    </LinearLayout>
+
 
 
 </RelativeLayout>

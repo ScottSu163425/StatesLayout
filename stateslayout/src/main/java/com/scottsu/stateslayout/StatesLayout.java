@@ -9,12 +9,11 @@ import android.support.annotation.LayoutRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,13 +27,23 @@ import android.widget.TextView;
 public class StatesLayout extends CoordinatorLayout
 {
     private static final float RATIO_ICON_WITH = 0.25f;
-    private static final float RATIO_DEFAULT_LOADING_WHEEL_WITH = 0.18f;
+    private static final float RATIO_DEFAULT_LOADING_WHEEL_WITH = 0.20f;
+    private static final int DEFAULT_STATE_BACKGROUND = Integer.MAX_VALUE;
+
+    private boolean mShowIcon = true;
+
+    private boolean mHasStateBackgroundImage;
+    private boolean mHasLoadingTip;
 
     private int mStateBackgroundColor;
 
     private int mTipTextColor;
 
     private int mLoadingWheelColor;
+
+    private
+    @DrawableRes
+    int mStateBackgroundImage;
 
     private
     @DrawableRes
@@ -94,6 +103,12 @@ public class StatesLayout extends CoordinatorLayout
     {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.StatesLayout);
 
+        mShowIcon = typedArray.getBoolean(R.styleable.StatesLayout_sl_show_icon, true);
+
+        mStateBackgroundImage = typedArray.getResourceId(R.styleable.StatesLayout_sl_state_background_image, DEFAULT_STATE_BACKGROUND);
+
+        mHasStateBackgroundImage = mStateBackgroundImage != DEFAULT_STATE_BACKGROUND;
+
         mStateBackgroundColor = typedArray.getColor(R.styleable.StatesLayout_sl_state_background_color,
                 context.getResources().getColor(R.color.default_state_background));
 
@@ -112,6 +127,8 @@ public class StatesLayout extends CoordinatorLayout
         mLoadingTip = typedArray.getString(R.styleable.StatesLayout_sl_loading_tip);
         mEmptyTip = typedArray.getString(R.styleable.StatesLayout_sl_empty_tip);
         mErrorTip = typedArray.getString(R.styleable.StatesLayout_sl_error_tip);
+
+        mHasLoadingTip=mLoadingTip!=null;
 
         typedArray.recycle();
     }
@@ -136,12 +153,18 @@ public class StatesLayout extends CoordinatorLayout
         mDefaultLoadingProgressWheel = (ProgressWheel) mLoadingView.findViewById(R.id.progress_wheel_layout_state_default_loading);
         mDefaultLoadingTipTextView = (TextView) mLoadingView.findViewById(R.id.tv_tip_layout_state_default_loading);
         TextView textView = (TextView) mLoadingView.findViewById(R.id.tv_tip_layout_state_default_loading);
-        textView.setText(TextUtils.isEmpty(mLoadingTip) ? context.getString(R.string.default_state_tip_loading) : mLoadingTip);
-        textView.setTextColor(mTipTextColor);
-        textView.setTextSize(mTipTextSizeSp);
 
-        int width = (int) (getScreenWidth() * RATIO_DEFAULT_LOADING_WHEEL_WITH);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mDefaultLoadingProgressWheel.getLayoutParams();
+        if(mHasLoadingTip){
+            mDefaultLoadingTipTextView.setVisibility(VISIBLE);
+            textView.setText(TextUtils.isEmpty(mLoadingTip) ? context.getString(R.string.default_state_tip_loading) : mLoadingTip);
+            textView.setTextColor(mTipTextColor);
+            textView.setTextSize(mTipTextSizeSp);
+        }else {
+            mDefaultLoadingTipTextView.setVisibility(GONE);
+        }
+
+        int width = (int) (ScreenUtil.getScreenWidth(context) * RATIO_DEFAULT_LOADING_WHEEL_WITH);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mDefaultLoadingProgressWheel.getLayoutParams();
         params.width = width;
         params.height = width;
 
@@ -158,8 +181,6 @@ public class StatesLayout extends CoordinatorLayout
         mEmptyView = generateStateView(TextUtils.isEmpty(mEmptyTip) ? context.getString(R.string.default_state_tip_empty) : mEmptyTip,
                 mEmptyIconRes);
 
-        mEmptyView.setBackgroundColor(mStateBackgroundColor);
-
         mEmptyView.setOnClickListener(new OnClickListener()
         {
             @Override
@@ -169,10 +190,10 @@ public class StatesLayout extends CoordinatorLayout
             }
         });
 
-        int width = (int) (getScreenWidth() * RATIO_ICON_WITH);
+        int width = (int) (ScreenUtil.getScreenWidth(context) * RATIO_ICON_WITH);
 
         ImageView icon = mEmptyView.getIconImageView();
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) icon.getLayoutParams();
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) icon.getLayoutParams();
         params.width = width;
         params.height = width;
         icon.setLayoutParams(params);
@@ -185,8 +206,6 @@ public class StatesLayout extends CoordinatorLayout
         mErrorView = generateStateView(TextUtils.isEmpty(mErrorTip) ? context.getString(R.string.default_state_tip_error) : mErrorTip,
                 mErrorIconRes);
 
-        mErrorView.setBackgroundColor(mStateBackgroundColor);
-
         mErrorView.setOnClickListener(new OnClickListener()
         {
             @Override
@@ -196,10 +215,10 @@ public class StatesLayout extends CoordinatorLayout
             }
         });
 
-        int width = (int) (getScreenWidth() * RATIO_ICON_WITH);
+        int width = (int) (ScreenUtil.getScreenWidth(context) * RATIO_ICON_WITH);
 
         ImageView icon = mErrorView.getIconImageView();
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) icon.getLayoutParams();
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) icon.getLayoutParams();
         params.width = width;
         params.height = width;
         icon.setLayoutParams(params);
@@ -219,11 +238,24 @@ public class StatesLayout extends CoordinatorLayout
     private StateView generateStateView(String tip, @DrawableRes int iconRes)
     {
         StateView stateView = new StateView(this.getContext());
+
         stateView.setTip(tip);
-        stateView.setIcon(iconRes);
-        stateView.setBackgroundColor(mStateBackgroundColor);
         stateView.setTipColor(mTipTextColor);
         stateView.setTipSize(mTipTextSizeSp);
+
+        if (mShowIcon)
+        {
+            stateView.setIcon(iconRes);
+        }
+
+        if (mHasStateBackgroundImage)
+        {
+            stateView.setBackgroundImage(mStateBackgroundImage);
+        } else
+        {
+            stateView.setBackgroundColor(mStateBackgroundColor);
+        }
+
         return stateView;
     }
 
@@ -333,22 +365,6 @@ public class StatesLayout extends CoordinatorLayout
         {
             mDefaultLoadingTipTextView.setTextSize(tipTextColor);
         }
-    }
-
-    private int getScreenWidth()
-    {
-        WindowManager wm = (WindowManager) this.getContext().getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(outMetrics);
-        return outMetrics.widthPixels;
-    }
-
-    private int getScreenHeight()
-    {
-        WindowManager wm = (WindowManager) this.getContext().getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(outMetrics);
-        return outMetrics.heightPixels;
     }
 
     public void setCallback(StatesLayoutCallback mCallback)

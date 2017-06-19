@@ -14,6 +14,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 /**
  * 包名 com.scott.su.library
  * 描述
@@ -23,6 +25,7 @@ import android.widget.TextView;
 public class StateView extends FrameLayout
 {
     private TextView mTipTextView;
+    private ImageView mStateBackgroundImageView;
     private ImageView mIconImageView;
 
 
@@ -47,29 +50,41 @@ public class StateView extends FrameLayout
     private void initStateView(Context context)
     {
         View content = LayoutInflater.from(context)
-                .inflate(R.layout.layout_state_view,this,true);
-        mIconImageView= (ImageView) content.findViewById(R.id.iv_icon_layout_state_view);
-        mTipTextView= (TextView) content.findViewById(R.id.tv_tip_layout_state_view);
+                .inflate(R.layout.layout_state_view, this, true);
+        mStateBackgroundImageView = (ImageView) content.findViewById(R.id.iv_bg_layout_state_view);
+        mIconImageView = (ImageView) content.findViewById(R.id.iv_icon_layout_state_view);
+        mTipTextView = (TextView) content.findViewById(R.id.tv_tip_layout_state_view);
     }
 
-    public void setTip(String tip){
+    public void setBackgroundImage(@DrawableRes int res)
+    {
+        mStateBackgroundImageView.setVisibility(VISIBLE);
+
+        Glide.with(getContext() )
+                .load(res)
+                .into((ImageView) findViewById(R.id.iv_bg_layout_state_view));
+    }
+
+    public void setTip(String tip)
+    {
         mTipTextView.setText(tip);
     }
 
-    public void setTipColor(@ColorInt int color){
+    public void setTipColor(@ColorInt int color)
+    {
         mTipTextView.setTextColor(color);
     }
 
-    public void setTipSize( float sizeSp){
+    public void setTipSize(float sizeSp)
+    {
         mTipTextView.setTextSize(sizeSp);
     }
 
-    public void setIcon(@DrawableRes  int resId){
-        mIconImageView.setImageResource(resId);
-    }
+    public void setIcon(@DrawableRes int resId)
+    {
+        mIconImageView.setVisibility(VISIBLE);
 
-    public void setIcon(Drawable drawable){
-        mIconImageView.setImageDrawable(drawable);
+        mIconImageView.setImageResource(resId);
     }
 
     public ImageView getIconImageView()

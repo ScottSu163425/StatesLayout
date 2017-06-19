@@ -1,29 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent" >
+
+        <ImageView
+            android:id="@+id/iv_bg_layout_state_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center">
+                <ImageView
+                    android:id="@+id/iv_icon_layout_state_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_icon_tip"
+                    android:visibility="gone"
+                    tools:src="@drawable/ic_placeholder_state_error"/>
+
+                <TextView
+                    android:id="@+id/tv_tip_layout_state_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="@color/textColorTertiary"
+                    android:textSize="@dimen/text_size_body"
+                    tools:text="@string/default_state_tip_empty"/>
+        </LinearLayout>
 
 
-    <ImageView
-        android:id="@+id/iv_icon_layout_state_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_placeholder_state_error"
-        android:layout_above="@+id/tv_tip_layout_state_view"
-        android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/tv_tip_layout_state_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:maxLines="1"
-        android:paddingTop="4dp"
-        android:textColor="@color/textColorTertiary"
-        android:textSize="@dimen/text_size_body"/>
-
-</RelativeLayout>
+</FrameLayout>
