@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -128,7 +127,7 @@ public class StatesLayout extends CoordinatorLayout
         mEmptyTip = typedArray.getString(R.styleable.StatesLayout_sl_empty_tip);
         mErrorTip = typedArray.getString(R.styleable.StatesLayout_sl_error_tip);
 
-        mHasLoadingTip=mLoadingTip!=null;
+        mHasLoadingTip=(mLoadingTip!=null)&&(!mLoadingTip.isEmpty());
 
         typedArray.recycle();
     }
@@ -174,6 +173,12 @@ public class StatesLayout extends CoordinatorLayout
         mDefaultLoadingProgressWheel.setBarWidth(width / 11);
 
         mLoadingView.setBackgroundColor(mStateBackgroundColor);
+
+        mLoadingView.setOnClickListener(new OnClickListener(){
+            public void onClick(View view){
+
+            }
+        });
     }
 
     private void initEmptyView(Context context)

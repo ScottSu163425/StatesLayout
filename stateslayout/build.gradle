@@ -33,7 +33,7 @@ publish {
     userOrg = 'scottsu'//bintray.com用户名
     groupId = 'com.scottsu'//jcenter上的路径
     artifactId = 'states-layout'//项目名称
-    publishVersion = '1.1.0'//版本号
+    publishVersion = '1.1.1'//版本号
     desc = 'A muti-states layout for common android development.'
     website = 'https://github.com/ScottSu163425/StatesLayout'
 }

@@ -2,6 +2,7 @@ package com.scottsu.stateslayoutmaster;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,8 @@ public class MainActivity extends AppCompatActivity
 {
     private Toolbar mToolbar;
     private StatesLayout mStatesLayout;
+    private CardView mCardView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -21,6 +24,15 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar(getToolbar());
+
+        getCardView().setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Toast.makeText(MainActivity.this, "onClick", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private Toolbar getToolbar()
@@ -104,6 +116,15 @@ public class MainActivity extends AppCompatActivity
             });
         }
         return mStatesLayout;
+    }
+
+    private CardView getCardView()
+    {
+        if (mCardView == null)
+        {
+            mCardView = (CardView)findViewById(R.id.card);
+        }
+        return mCardView;
     }
 
 }
