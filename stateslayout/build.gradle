@@ -33,7 +33,7 @@ publish {
     userOrg = 'scottsu'//bintray.com用户名
     groupId = 'com.scottsu'//jcenter上的路径
     artifactId = 'states-layout'//项目名称
-    publishVersion = '1.1.1'//版本号
+    publishVersion = '1.1.2'//版本号
     desc = 'A muti-states layout for common android development.'
     website = 'https://github.com/ScottSu163425/StatesLayout'
 }
@@ -57,4 +57,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile 'com.github.bumptech.glide:glide:4.0.0-RC0'
+    compile 'com.pnikosis:materialish-progress:1.7'
 }
