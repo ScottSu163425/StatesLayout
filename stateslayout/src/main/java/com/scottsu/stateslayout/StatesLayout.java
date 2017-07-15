@@ -31,44 +31,59 @@ public class StatesLayout extends CoordinatorLayout
     private static final float RATIO_DEFAULT_LOADING_WHEEL_WITH = 0.20f;
     private static final int DEFAULT_STATE_BACKGROUND = Integer.MAX_VALUE;
 
-    private boolean mShowIcon = true;
+    private static final int DEFAULT_LOADING_LAYOUT_RES = R.layout.layout_state_default_loading;
+    private static final int DEFAULT_EMPTY_LAYOUT_RES = Integer.MAX_VALUE - 1;
+    private static final int DEFAULT_ERROR_LAYOUT_RES = Integer.MAX_VALUE - 2;
 
-    private boolean mHasStateBackgroundImage;
-    private boolean mHasLoadingTip;
+    private boolean mDefaultShowIcon = true;
 
-    private int mStateBackgroundColor;
+    private boolean mDefaultHasStateBackgroundImage;
 
-    private int mTipTextColor;
+    private boolean mDefaultHasLoadingText;
 
-    private int mLoadingWheelColor;
+    private int mDefaultStateBackgroundColor;
 
-    private
-    @DrawableRes
-    int mStateBackgroundImage;
+    private int mDefaultTipTextColor;
 
-    private
-    @DrawableRes
-    int mEmptyIconRes;
+    private int mDefaultLoadingWheelColor;
 
     private
     @DrawableRes
-    int mErrorIconRes;
+    int mDefaultStateBackgroundImage;
+
+    private
+    @DrawableRes
+    int mDefaultEmptyIconRes;
+
+    private
+    @DrawableRes
+    int mDefaultErrorIconRes;
 
     private
     @LayoutRes
     int mLoadingLayoutRes;
 
-    private String mLoadingTip;
+    private
+    @LayoutRes
+    int mEmptyLayoutRes;
 
-    private String mEmptyTip;
-
-    private String mErrorTip;
-
-    private float mTipTextSizeSp = 16;
+    private
+    @LayoutRes
+    int mErrorLayoutRes;
 
     private View mLoadingView;
+    private View mEmptyView;
+    private View mErrorView;
 
-    private StateView mEmptyView, mErrorView;
+    private String mDefaultLoadingText;
+
+    private String mDefaultEmptyText;
+
+    private String mDefaultErrorText;
+
+    private float mDefaultTextSizeSp = 16;
+
+//    private StateView mDefaultEmptyView, mDefaultErrorView;
 
     private ProgressWheel mDefaultLoadingProgressWheel;
 
@@ -104,39 +119,41 @@ public class StatesLayout extends CoordinatorLayout
     {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.StatesLayout);
 
-        mShowIcon = typedArray.getBoolean(R.styleable.StatesLayout_sl_show_icon, true);
+        mDefaultShowIcon = typedArray.getBoolean(R.styleable.StatesLayout_sl_default_show_icon, true);
 
-        mStateBackgroundImage = typedArray.getResourceId(R.styleable.StatesLayout_sl_state_background_image, DEFAULT_STATE_BACKGROUND);
+        mDefaultStateBackgroundImage = typedArray.getResourceId(R.styleable.StatesLayout_sl_default_state_background_image, DEFAULT_STATE_BACKGROUND);
 
-        mHasStateBackgroundImage = mStateBackgroundImage != DEFAULT_STATE_BACKGROUND;
+        mDefaultHasStateBackgroundImage = mDefaultStateBackgroundImage != DEFAULT_STATE_BACKGROUND;
 
-        mStateBackgroundColor = typedArray.getColor(R.styleable.StatesLayout_sl_state_background_color,
+        mDefaultStateBackgroundColor = typedArray.getColor(R.styleable.StatesLayout_sl_default_state_background_color,
                 context.getResources().getColor(R.color.default_state_background));
 
-        mTipTextColor = typedArray.getColor(R.styleable.StatesLayout_sl_tip_text_color,
+        mDefaultTipTextColor = typedArray.getColor(R.styleable.StatesLayout_sl_default_text_color,
                 context.getResources().getColor(R.color.default_tip_text));
 
-        float tipTextSizePx = typedArray.getDimensionPixelSize(R.styleable.StatesLayout_sl_tip_text_size,
-                ScreenUtil.sp2Px(context, mTipTextSizeSp));
-        mTipTextSizeSp = ScreenUtil.px2Sp(context, tipTextSizePx);
+        float tipTextSizePx = typedArray.getDimensionPixelSize(R.styleable.StatesLayout_sl_default_text_size,
+                ScreenUtil.sp2Px(context, mDefaultTextSizeSp));
+        mDefaultTextSizeSp = ScreenUtil.px2Sp(context, tipTextSizePx);
 
-        mLoadingWheelColor = typedArray.getColor(R.styleable.StatesLayout_sl_loading_wheel_color,
+        mDefaultLoadingWheelColor = typedArray.getColor(R.styleable.StatesLayout_sl_default_loading_wheel_color,
                 context.getResources().getColor(R.color.default_loading_wheel_color));
-        mEmptyIconRes = typedArray.getResourceId(R.styleable.StatesLayout_sl_empty_icon, R.drawable.ic_placeholder_state_empty);
-        mErrorIconRes = typedArray.getResourceId(R.styleable.StatesLayout_sl_error_icon, R.drawable.ic_placeholder_state_error);
-        mLoadingLayoutRes = typedArray.getResourceId(R.styleable.StatesLayout_sl_loading_layout, R.layout.layout_state_default_loading);
-        mLoadingTip = typedArray.getString(R.styleable.StatesLayout_sl_loading_tip);
-        mEmptyTip = typedArray.getString(R.styleable.StatesLayout_sl_empty_tip);
-        mErrorTip = typedArray.getString(R.styleable.StatesLayout_sl_error_tip);
+        mDefaultEmptyIconRes = typedArray.getResourceId(R.styleable.StatesLayout_sl_default_empty_icon, R.drawable.ic_placeholder_state_empty);
+        mDefaultErrorIconRes = typedArray.getResourceId(R.styleable.StatesLayout_sl_default_error_icon, R.drawable.ic_placeholder_state_error);
+        mDefaultLoadingText = typedArray.getString(R.styleable.StatesLayout_sl_default_loading_text);
+        mDefaultEmptyText = typedArray.getString(R.styleable.StatesLayout_sl_default_empty_text);
+        mDefaultErrorText = typedArray.getString(R.styleable.StatesLayout_sl_default_error_text);
+        mDefaultHasLoadingText = (mDefaultLoadingText != null) && (!mDefaultLoadingText.isEmpty());
 
-        mHasLoadingTip=(mLoadingTip!=null)&&(!mLoadingTip.isEmpty());
+        mLoadingLayoutRes = typedArray.getResourceId(R.styleable.StatesLayout_sl_loading_layout, DEFAULT_LOADING_LAYOUT_RES);
+        mEmptyLayoutRes = typedArray.getResourceId(R.styleable.StatesLayout_sl_empty_layout, DEFAULT_EMPTY_LAYOUT_RES);
+        mErrorLayoutRes = typedArray.getResourceId(R.styleable.StatesLayout_sl_error_layout, DEFAULT_ERROR_LAYOUT_RES);
 
         typedArray.recycle();
     }
 
     private void initLoadingView(Context context)
     {
-        if (R.layout.layout_state_default_loading == mLoadingLayoutRes)
+        if (DEFAULT_LOADING_LAYOUT_RES == mLoadingLayoutRes)
         {
             initDefaultLoadingView(context);
         } else
@@ -144,49 +161,26 @@ public class StatesLayout extends CoordinatorLayout
             mLoadingView = LayoutInflater.from(context).inflate(mLoadingLayoutRes, this, false);
         }
 
-        bringToTopOfZ(mLoadingView);
-    }
-
-    private void initDefaultLoadingView(Context context)
-    {
-        //User default loading view.
-        mLoadingView = LayoutInflater.from(context).inflate(R.layout.layout_state_default_loading, this, false);
-        mDefaultLoadingProgressWheel = (ProgressWheel) mLoadingView.findViewById(R.id.progress_wheel_layout_state_default_loading);
-        mDefaultLoadingTipTextView = (TextView) mLoadingView.findViewById(R.id.tv_tip_layout_state_default_loading);
-        TextView textView = (TextView) mLoadingView.findViewById(R.id.tv_tip_layout_state_default_loading);
-
-        if(mHasLoadingTip){
-            mDefaultLoadingTipTextView.setVisibility(VISIBLE);
-            textView.setText(TextUtils.isEmpty(mLoadingTip) ? context.getString(R.string.default_state_tip_loading) : mLoadingTip);
-            textView.setTextColor(mTipTextColor);
-            textView.setTextSize(mTipTextSizeSp);
-        }else {
-            mDefaultLoadingTipTextView.setVisibility(GONE);
-        }
-
-        int width = (int) (ScreenUtil.getScreenWidth(context) * RATIO_DEFAULT_LOADING_WHEEL_WITH);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mDefaultLoadingProgressWheel.getLayoutParams();
-        params.width = width;
-        params.height = width;
-
-        mDefaultLoadingProgressWheel.setLayoutParams(params);
-        mDefaultLoadingProgressWheel.setBarColor(mLoadingWheelColor);
-        mDefaultLoadingProgressWheel.setCircleRadius(width);
-        mDefaultLoadingProgressWheel.setBarWidth(width / 11);
-
-        mLoadingView.setBackgroundColor(mStateBackgroundColor);
-
-        mLoadingView.setOnClickListener(new OnClickListener(){
-            public void onClick(View view){
+        mLoadingView.setOnClickListener(new OnClickListener()
+        {
+            public void onClick(View view)
+            {
 
             }
         });
+
+        bringToTopOfZ(mLoadingView);
     }
 
     private void initEmptyView(Context context)
     {
-        mEmptyView = generateStateView(TextUtils.isEmpty(mEmptyTip) ? context.getString(R.string.default_state_tip_empty) : mEmptyTip,
-                mEmptyIconRes);
+        if (DEFAULT_EMPTY_LAYOUT_RES == mEmptyLayoutRes)
+        {
+            mEmptyView = initDefaultEmptyView(context);
+        } else
+        {
+            mEmptyView = LayoutInflater.from(context).inflate(mEmptyLayoutRes, this, false);
+        }
 
         mEmptyView.setOnClickListener(new OnClickListener()
         {
@@ -197,21 +191,18 @@ public class StatesLayout extends CoordinatorLayout
             }
         });
 
-        int width = (int) (ScreenUtil.getScreenWidth(context) * RATIO_ICON_WITH);
-
-        ImageView icon = mEmptyView.getIconImageView();
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) icon.getLayoutParams();
-        params.width = width;
-        params.height = width;
-        icon.setLayoutParams(params);
-
         bringToTopOfZ(mEmptyView);
     }
 
     private void initErrorView(Context context)
     {
-        mErrorView = generateStateView(TextUtils.isEmpty(mErrorTip) ? context.getString(R.string.default_state_tip_error) : mErrorTip,
-                mErrorIconRes);
+        if (DEFAULT_ERROR_LAYOUT_RES == mErrorLayoutRes)
+        {
+            mErrorView = initDefaultErrorView(context);
+        } else
+        {
+            mErrorView= LayoutInflater.from(context).inflate(mErrorLayoutRes, this, false);
+        }
 
         mErrorView.setOnClickListener(new OnClickListener()
         {
@@ -222,15 +213,71 @@ public class StatesLayout extends CoordinatorLayout
             }
         });
 
+        bringToTopOfZ(mErrorView);
+    }
+
+    private void initDefaultLoadingView(Context context)
+    {
+        //User default loading view.
+        mLoadingView = LayoutInflater.from(context).inflate(R.layout.layout_state_default_loading, this, false);
+        mDefaultLoadingProgressWheel = (ProgressWheel) mLoadingView.findViewById(R.id.progress_wheel_layout_state_default_loading);
+        mDefaultLoadingTipTextView = (TextView) mLoadingView.findViewById(R.id.tv_tip_layout_state_default_loading);
+        TextView textView = (TextView) mLoadingView.findViewById(R.id.tv_tip_layout_state_default_loading);
+
+        if (mDefaultHasLoadingText)
+        {
+            mDefaultLoadingTipTextView.setVisibility(VISIBLE);
+            textView.setText(TextUtils.isEmpty(mDefaultLoadingText) ? context.getString(R.string.default_state_tip_loading) : mDefaultLoadingText);
+            textView.setTextColor(mDefaultTipTextColor);
+            textView.setTextSize(mDefaultTextSizeSp);
+        } else
+        {
+            mDefaultLoadingTipTextView.setVisibility(GONE);
+        }
+
+        int width = (int) (ScreenUtil.getScreenWidth(context) * RATIO_DEFAULT_LOADING_WHEEL_WITH);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mDefaultLoadingProgressWheel.getLayoutParams();
+        params.width = width;
+        params.height = width;
+
+        mDefaultLoadingProgressWheel.setLayoutParams(params);
+        mDefaultLoadingProgressWheel.setBarColor(mDefaultLoadingWheelColor);
+        mDefaultLoadingProgressWheel.setCircleRadius(width);
+        mDefaultLoadingProgressWheel.setBarWidth(width / 11);
+
+        mLoadingView.setBackgroundColor(mDefaultStateBackgroundColor);
+    }
+
+    private View initDefaultEmptyView(Context context)
+    {
+        StateView defaultEmptyView = generateDefaultStateView(TextUtils.isEmpty(mDefaultEmptyText) ? context.getString(R.string.default_state_tip_empty) : mDefaultEmptyText,
+                mDefaultEmptyIconRes);
+
         int width = (int) (ScreenUtil.getScreenWidth(context) * RATIO_ICON_WITH);
 
-        ImageView icon = mErrorView.getIconImageView();
+        ImageView icon = defaultEmptyView.getIconImageView();
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) icon.getLayoutParams();
         params.width = width;
         params.height = width;
         icon.setLayoutParams(params);
 
-        bringToTopOfZ(mErrorView);
+        return defaultEmptyView;
+    }
+
+    private View initDefaultErrorView(Context context)
+    {
+        StateView defaultErrorView = generateDefaultStateView(TextUtils.isEmpty(mDefaultErrorText) ? context.getString(R.string.default_state_tip_error) : mDefaultErrorText,
+                mDefaultErrorIconRes);
+
+        int width = (int) (ScreenUtil.getScreenWidth(context) * RATIO_ICON_WITH);
+
+        ImageView icon = defaultErrorView.getIconImageView();
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) icon.getLayoutParams();
+        params.width = width;
+        params.height = width;
+        icon.setLayoutParams(params);
+
+        return defaultErrorView;
     }
 
     private void bringToTopOfZ(View view)
@@ -242,25 +289,25 @@ public class StatesLayout extends CoordinatorLayout
         }
     }
 
-    private StateView generateStateView(String tip, @DrawableRes int iconRes)
+    private StateView generateDefaultStateView(String tip, @DrawableRes int iconRes)
     {
         StateView stateView = new StateView(this.getContext());
 
         stateView.setTip(tip);
-        stateView.setTipColor(mTipTextColor);
-        stateView.setTipSize(mTipTextSizeSp);
+        stateView.setTipColor(mDefaultTipTextColor);
+        stateView.setTipSize(mDefaultTextSizeSp);
 
-        if (mShowIcon)
+        if (mDefaultShowIcon)
         {
             stateView.setIcon(iconRes);
         }
 
-        if (mHasStateBackgroundImage)
+        if (mDefaultHasStateBackgroundImage)
         {
-            stateView.setBackgroundImage(mStateBackgroundImage);
+            stateView.setBackgroundImage(mDefaultStateBackgroundImage);
         } else
         {
-            stateView.setBackgroundColor(mStateBackgroundColor);
+            stateView.setBackgroundColor(mDefaultStateBackgroundColor);
         }
 
         return stateView;
@@ -320,7 +367,7 @@ public class StatesLayout extends CoordinatorLayout
         }
     }
 
-    public void setLoadingWheelColor(@ColorInt int colorInt)
+    public void setDefaultLoadingWheelColor(@ColorInt int colorInt)
     {
         if (mDefaultLoadingProgressWheel != null)
         {
@@ -328,51 +375,51 @@ public class StatesLayout extends CoordinatorLayout
         }
     }
 
-    public void setEmptyIconRes(@DrawableRes int emptyIconRes)
-    {
-        mEmptyView.setIcon(emptyIconRes);
-    }
-
-    public void setErrorIconRes(@DrawableRes int errorIconRes)
-    {
-        mErrorView.setIcon(errorIconRes);
-    }
-
-    public void setEmptyTip(String emptyTip)
-    {
-        mEmptyView.setTip(emptyTip);
-    }
-
-    public void setErrorTip(String errorTip)
-    {
-        mErrorView.setTip(errorTip);
-    }
-
-    public void setTipTextSizeSp(float tipTextSizeSp)
-    {
-        mTipTextSizeSp = tipTextSizeSp;
-
-        mEmptyView.setTipSize(tipTextSizeSp);
-        mErrorView.setTipSize(tipTextSizeSp);
-
-        if (mDefaultLoadingTipTextView != null)
-        {
-            mDefaultLoadingTipTextView.setTextSize(tipTextSizeSp);
-        }
-    }
-
-    public void setTipTextColor(@ColorInt int tipTextColor)
-    {
-        mTipTextColor = tipTextColor;
-
-        mEmptyView.setTipSize(tipTextColor);
-        mErrorView.setTipSize(tipTextColor);
-
-        if (mDefaultLoadingTipTextView != null)
-        {
-            mDefaultLoadingTipTextView.setTextSize(tipTextColor);
-        }
-    }
+//    public void setDefaultEmptyIconRes(@DrawableRes int defaultEmptyIconRes)
+//    {
+//        mDefaultEmptyView.setIcon(defaultEmptyIconRes);
+//    }
+//
+//    public void setDefaultErrorIconRes(@DrawableRes int defaultErrorIconRes)
+//    {
+//        mDefaultErrorView.setIcon(defaultErrorIconRes);
+//    }
+//
+//    public void setDefaultEmptyTip(String defaultEmptyTip)
+//    {
+//        mDefaultEmptyView.setTip(defaultEmptyTip);
+//    }
+//
+//    public void setDefaultErrorTip(String defaultErrorTip)
+//    {
+//        mDefaultErrorView.setTip(defaultErrorTip);
+//    }
+//
+//    public void setDefaultTipTextSizeSp(float defaultTipTextSizeSp)
+//    {
+//        mDefaultTextSizeSp = defaultTipTextSizeSp;
+//
+//        mDefaultEmptyView.setTipSize(defaultTipTextSizeSp);
+//        mDefaultErrorView.setTipSize(defaultTipTextSizeSp);
+//
+//        if (mDefaultLoadingTipTextView != null)
+//        {
+//            mDefaultLoadingTipTextView.setTextSize(defaultTipTextSizeSp);
+//        }
+//    }
+//
+//    public void setDefaultTipTextColor(@ColorInt int defaultTipTextColor)
+//    {
+//        mDefaultTipTextColor = defaultTipTextColor;
+//
+//        mDefaultEmptyView.setTipSize(defaultTipTextColor);
+//        mDefaultErrorView.setTipSize(defaultTipTextColor);
+//
+//        if (mDefaultLoadingTipTextView != null)
+//        {
+//            mDefaultLoadingTipTextView.setTextSize(defaultTipTextColor);
+//        }
+//    }
 
     public void setCallback(StatesLayoutCallback mCallback)
     {
