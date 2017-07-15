@@ -29,15 +29,12 @@ public class StatesLayout extends CoordinatorLayout
 {
     private static final float RATIO_ICON_WITH = 0.25f;
     private static final float RATIO_DEFAULT_LOADING_WHEEL_WITH = 0.20f;
-    private static final int DEFAULT_STATE_BACKGROUND = Integer.MAX_VALUE;
 
     private static final int DEFAULT_LOADING_LAYOUT_RES = R.layout.layout_state_default_loading;
     private static final int DEFAULT_EMPTY_LAYOUT_RES = Integer.MAX_VALUE - 1;
     private static final int DEFAULT_ERROR_LAYOUT_RES = Integer.MAX_VALUE - 2;
 
     private boolean mDefaultShowIcon = true;
-
-    private boolean mDefaultHasStateBackgroundImage;
 
     private boolean mDefaultHasLoadingText;
 
@@ -46,10 +43,6 @@ public class StatesLayout extends CoordinatorLayout
     private int mDefaultTipTextColor;
 
     private int mDefaultLoadingWheelColor;
-
-    private
-    @DrawableRes
-    int mDefaultStateBackgroundImage;
 
     private
     @DrawableRes
@@ -120,10 +113,6 @@ public class StatesLayout extends CoordinatorLayout
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.StatesLayout);
 
         mDefaultShowIcon = typedArray.getBoolean(R.styleable.StatesLayout_sl_default_show_icon, true);
-
-        mDefaultStateBackgroundImage = typedArray.getResourceId(R.styleable.StatesLayout_sl_default_state_background_image, DEFAULT_STATE_BACKGROUND);
-
-        mDefaultHasStateBackgroundImage = mDefaultStateBackgroundImage != DEFAULT_STATE_BACKGROUND;
 
         mDefaultStateBackgroundColor = typedArray.getColor(R.styleable.StatesLayout_sl_default_state_background_color,
                 context.getResources().getColor(R.color.default_state_background));
@@ -201,7 +190,7 @@ public class StatesLayout extends CoordinatorLayout
             mErrorView = initDefaultErrorView(context);
         } else
         {
-            mErrorView= LayoutInflater.from(context).inflate(mErrorLayoutRes, this, false);
+            mErrorView = LayoutInflater.from(context).inflate(mErrorLayoutRes, this, false);
         }
 
         mErrorView.setOnClickListener(new OnClickListener()
@@ -302,13 +291,7 @@ public class StatesLayout extends CoordinatorLayout
             stateView.setIcon(iconRes);
         }
 
-        if (mDefaultHasStateBackgroundImage)
-        {
-            stateView.setBackgroundImage(mDefaultStateBackgroundImage);
-        } else
-        {
-            stateView.setBackgroundColor(mDefaultStateBackgroundColor);
-        }
+        stateView.setBackgroundColor(mDefaultStateBackgroundColor);
 
         return stateView;
     }

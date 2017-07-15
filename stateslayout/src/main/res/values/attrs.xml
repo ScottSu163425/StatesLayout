@@ -6,7 +6,6 @@
         <attr name="sl_default_loading_text" format="string"/>
         <attr name="sl_default_loading_wheel_color" format="color"/>
         <attr name="sl_default_state_background_color" format="color"/>
-        <attr name="sl_default_state_background_image" format="reference"/>
         <attr name="sl_default_text_color" format="color"/>
         <attr name="sl_default_text_size" format="dimension"/>
         <attr name="sl_default_empty_icon" format="reference"/>
