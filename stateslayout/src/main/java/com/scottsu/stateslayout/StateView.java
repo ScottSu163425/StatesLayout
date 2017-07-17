@@ -1,7 +1,6 @@
 package com.scottsu.stateslayout;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -14,7 +13,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 
 /**
  * 包名 com.scott.su.library
@@ -59,10 +57,7 @@ public class StateView extends FrameLayout
     public void setBackgroundImage(@DrawableRes int res)
     {
         mStateBackgroundImageView.setVisibility(VISIBLE);
-
-        Glide.with(getContext() )
-                .load(res)
-                .into((ImageView) findViewById(R.id.iv_bg_layout_state_view));
+        mStateBackgroundImageView.setImageResource(res);
     }
 
     public void setTip(String tip)
