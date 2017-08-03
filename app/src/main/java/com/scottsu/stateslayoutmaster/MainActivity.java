@@ -1,5 +1,6 @@
 package com.scottsu.stateslayoutmaster;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -91,6 +92,11 @@ public class MainActivity extends AppCompatActivity
         if (mStatesLayout == null)
         {
             mStatesLayout = (StatesLayout) findViewById(R.id.state_layout);
+            mStatesLayout.setDefaultStateBackgroundColor(Color.GREEN);
+            mStatesLayout.setDefaultEmptyIconRes(R.mipmap.ic_launcher_round);
+            mStatesLayout.setDefaultTextColor(Color.WHITE);
+            mStatesLayout.setErrorView(R.layout.error);
+
             mStatesLayout.setCallback(new StatesLayout.StatesLayoutCallback()
             {
                 @Override

@@ -26,18 +26,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:sl_default_loading_text="loading"
-        app:sl_default_loading_wheel_color="#ffffff"
-        app:sl_default_empty_icon="@mipmap/ic_launcher_round"
-        app:sl_default_empty_text="emp"
-        app:sl_default_error_icon="@mipmap/ic_launcher"
-        app:sl_default_error_text="err"
-        app:sl_default_show_icon="true"
-        app:sl_empty_layout="@layout/empty"
-        app:sl_error_layout="@layout/error"
-        app:sl_default_state_background_color="@color/colorPrimary"
-        app:sl_default_text_color="#ffffff"
-        app:sl_default_text_size="35sp"
-        >
+        app:sl_default_loading_wheel_color="@color/colorAccent">
 
         <android.support.v7.widget.CardView
             android:id="@+id/card"
