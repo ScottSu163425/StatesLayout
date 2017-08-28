@@ -32,7 +32,6 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:textColor="@color/textColorTertiary"
-                    android:textSize="@dimen/text_size_body"
                     tools:text="@string/default_state_tip_empty"/>
         </LinearLayout>
 
