@@ -31,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:textColor="@color/textColorTertiary"
+                    android:textColor="@color/default_loading_wheel_color"
                     tools:text="@string/default_state_tip_empty"/>
         </LinearLayout>
 
