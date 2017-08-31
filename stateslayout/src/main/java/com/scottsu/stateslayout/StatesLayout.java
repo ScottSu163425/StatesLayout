@@ -10,9 +10,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -77,7 +80,7 @@ public class StatesLayout extends CoordinatorLayout
 
     private float mDefaultTextSizeSp = 16;
 
-    private View mDefaultLoadingView ;
+    private View mDefaultLoadingView;
     private StateView mDefaultEmptyView, mDefaultErrorView;
 
     private ProgressWheel mDefaultLoadingProgressWheel;
@@ -123,8 +126,8 @@ public class StatesLayout extends CoordinatorLayout
                 context.getResources().getColor(R.color.default_tip_text));
 
         float tipTextSizePx = typedArray.getDimensionPixelSize(R.styleable.StatesLayout_sl_default_text_size,
-                ScreenUtil.sp2Px(context, mDefaultTextSizeSp));
-        mDefaultTextSizeSp = ScreenUtil.px2Sp(context, tipTextSizePx);
+                sp2Px(context, mDefaultTextSizeSp));
+        mDefaultTextSizeSp = px2Sp(context, tipTextSizePx);
 
         mDefaultLoadingWheelColor = typedArray.getColor(R.styleable.StatesLayout_sl_default_loading_wheel_color,
                 context.getResources().getColor(R.color.default_loading_wheel_color));
@@ -146,13 +149,13 @@ public class StatesLayout extends CoordinatorLayout
     {
         if (DEFAULT_LOADING_LAYOUT_RES == mLoadingLayoutRes)
         {
-           mLoadingView= initDefaultLoadingView(context);
+            mLoadingView = initDefaultLoadingView(context);
         } else
         {
             mLoadingView = LayoutInflater.from(context).inflate(mLoadingLayoutRes, this, false);
         }
 
-       configLoadingView();
+        configLoadingView();
     }
 
     private void initEmptyView(Context context)
@@ -241,7 +244,7 @@ public class StatesLayout extends CoordinatorLayout
             mDefaultLoadingTipTextView.setVisibility(GONE);
         }
 
-        int width = (int) (ScreenUtil.getScreenWidth(context) * RATIO_DEFAULT_LOADING_WHEEL_WITH);
+        int width = (int) (getScreenWidth(context) * RATIO_DEFAULT_LOADING_WHEEL_WITH);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mDefaultLoadingProgressWheel.getLayoutParams();
         params.width = width;
         params.height = width;
@@ -260,7 +263,7 @@ public class StatesLayout extends CoordinatorLayout
         mDefaultEmptyView = generateDefaultStateView(TextUtils.isEmpty(mDefaultEmptyText) ? context.getString(R.string.default_state_tip_empty) : mDefaultEmptyText,
                 mDefaultEmptyIconRes);
 
-        int width = (int) (ScreenUtil.getScreenWidth(context) * RATIO_ICON_WITH);
+        int width = (int) (getScreenWidth(context) * RATIO_ICON_WITH);
 
         ImageView icon = mDefaultEmptyView.getIconImageView();
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) icon.getLayoutParams();
@@ -273,10 +276,10 @@ public class StatesLayout extends CoordinatorLayout
 
     private View initDefaultErrorView(Context context)
     {
-       mDefaultErrorView = generateDefaultStateView(TextUtils.isEmpty(mDefaultErrorText) ? context.getString(R.string.default_state_tip_error) : mDefaultErrorText,
+        mDefaultErrorView = generateDefaultStateView(TextUtils.isEmpty(mDefaultErrorText) ? context.getString(R.string.default_state_tip_error) : mDefaultErrorText,
                 mDefaultErrorIconRes);
 
-        int width = (int) (ScreenUtil.getScreenWidth(context) * RATIO_ICON_WITH);
+        int width = (int) (getScreenWidth(context) * RATIO_ICON_WITH);
 
         ImageView icon = mDefaultErrorView.getIconImageView();
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) icon.getLayoutParams();
@@ -382,7 +385,7 @@ public class StatesLayout extends CoordinatorLayout
             mDefaultErrorView.setBackgroundColor(defaultStateBackgroundColor);
         }
 
-        if (mDefaultLoadingView!= null)
+        if (mDefaultLoadingView != null)
         {
             mDefaultLoadingView.setBackgroundColor(defaultStateBackgroundColor);
         }
@@ -398,28 +401,32 @@ public class StatesLayout extends CoordinatorLayout
 
     public void setDefaultEmptyIconRes(@DrawableRes int defaultEmptyIconRes)
     {
-        if( mDefaultEmptyView!= null){
+        if (mDefaultEmptyView != null)
+        {
             mDefaultEmptyView.setIcon(defaultEmptyIconRes);
         }
     }
 
     public void setDefaultErrorIconRes(@DrawableRes int defaultErrorIconRes)
     {
-        if( mDefaultErrorView!= null){
+        if (mDefaultErrorView != null)
+        {
             mDefaultErrorView.setIcon(defaultErrorIconRes);
         }
     }
 
     public void setDefaultEmptyTip(String defaultEmptyTip)
     {
-        if( mDefaultEmptyView!= null){
+        if (mDefaultEmptyView != null)
+        {
             mDefaultEmptyView.setTip(defaultEmptyTip);
         }
     }
 
     public void setDefaultErrorTip(String defaultErrorTip)
     {
-        if( mDefaultErrorView!= null){
+        if (mDefaultErrorView != null)
+        {
             mDefaultErrorView.setTip(defaultErrorTip);
         }
     }
@@ -500,6 +507,39 @@ public class StatesLayout extends CoordinatorLayout
     {
         mErrorView = LayoutInflater.from(getContext()).inflate(layoutRes, this, false);
         configErrorView();
+    }
+
+    private int getScreenWidth(Context context)
+    {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        return outMetrics.widthPixels;
+    }
+
+    /**
+     * sp转px
+     */
+    private int sp2Px(Context context, float spVal)
+    {
+        if (context == null)
+        {
+            return -1;
+        }
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                spVal, context.getResources().getDisplayMetrics());
+    }
+
+    /**
+     * px转sp
+     */
+    private float px2Sp(Context context, float pxVal)
+    {
+        if (context == null)
+        {
+            return -1;
+        }
+        return (pxVal / context.getResources().getDisplayMetrics().scaledDensity);
     }
 
     public void setCallback(StatesLayoutCallback mCallback)
